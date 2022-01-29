@@ -2,16 +2,17 @@
 #include <vector>
 #include "functions.h"
 
-int main() {
-    t_graph myGraph;
+int main(int argc, char * argv []) {
+    graph_t myGraph;
     std::vector<int> edges;
+    std::string inputFileName = "inputFile.txt";
+
+    if (argc > 1) {
+        inputFileName = argv[1];
+    }
 
     readGraph("inputFile.txt", myGraph);
     Kruskal(myGraph);
 
-    for (auto& i : myGraph.edges) {
-        cout << i.first << " ";
-    }
-    //cout << endl << myGraph.n << endl;
     return 0;
 }

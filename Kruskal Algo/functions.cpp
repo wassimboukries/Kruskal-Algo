@@ -4,7 +4,7 @@
 #include <vector>
 #include <algorithm>
 
-void readGraph(string fileName, t_graph& graph) {
+void readGraph(string fileName, graph_t & graph) {
     int i, weight, sourceV, destV;
 
     std::ifstream fichier(fileName);
@@ -17,35 +17,56 @@ void readGraph(string fileName, t_graph& graph) {
         auto edgePair = make_pair(weight, vertexPair);
         graph.edges.push_back(edgePair);
     }
-
 }
 
 
-void Kruskal(t_graph& graph) {
-    vector<int> parents;
+void Kruskal(graph_t & graph) {
+    // premier  le deuxième
+    subSet_t subsets;
+    int poidCouvrant = 0, sourceRoot, destRoot; 
     for (int i = 0; i < graph.nVertex; ++i) {
-        parents.push_back(-1);
+        // chaque vertex est parent de lui même à l'initialisation
+        subsets.parents.push_back(i);
+        // le rang est à 0 puisque chaque vertex est parent de lui même
+        subsets.ranks.push_back(0);
     }
 
     // trier les aretes du graphs par ordre croissant des poids (weight)
     sort(graph.edges.begin(), graph.edges.end());
 
     for (auto& edge : graph.edges) {
-        if (find(parents, edge.second.first) != find(parents, edge.second.second)) {
+        sourceRoot = find(subsets, edge.second.first);
+        destRoot = find(subsets, edge.second.second);
+        if (sourceRoot != destRoot) {
             cout << edge.first << " " << edge.second.first << " " << edge.second.second << endl;
-            Union(parents, edge.second.first, edge.second.second);
+            poidCouvrant += edge.first;
+            Union(subsets, sourceRoot, destRoot);
         }
     }
+
+    cout << "le poid de l'arbre minimal couvrant est : " << poidCouvrant << endl;
 }
 
 // A utility function to find the subset of an element i
-int find(vector<int> parents, int i) {
-    if (parents[i] == -1)
-        return i;
-    return find(parents, parents[i]);
+int find(subSet_t & subsets, int i) {
+    int parent = subsets.parents[i];
+    if (i != parent)
+        subsets.parents[i] = find(subsets, parent);
+    return parent;
 }
 
 // A utility function to do union of two subsets
-void Union(vector<int> & parents, int x, int y) {
-    parents[x] = y;
+void Union(subSet_t& subsets, int x, int y) {
+    int xRoot = find(subsets, x), yRoot = find(subsets, y);
+
+    if (subsets.ranks[xRoot] > subsets.ranks[yRoot]) {
+        subsets.parents[yRoot] = xRoot;
+    }
+    else {
+        subsets.parents[xRoot] = yRoot;
+    }
+
+    if (subsets.ranks[xRoot] == subsets.ranks[yRoot]){
+        subsets.ranks[yRoot]++;
+    }
 }

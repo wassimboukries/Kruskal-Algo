@@ -7,11 +7,18 @@
 
 using namespace std;
 
-typedef struct t_graph {
+typedef struct graph {
 	int nVertex, nEdges;
 	// list of all the edges of the graph, one edge is presented as (weight, (vertex source, vertex destination))
 	vector<pair<int, pair<int, int>>> edges;
-} t_graph;
+} graph_t;
+
+typedef struct subSet {
+	// vecteur qui représente les parents de chaque vertex,
+	vector<int> parents;
+	// vecteur qui représente le rang de chaque vertex
+	vector<int> ranks;
+} subSet_t;
 
 typedef struct t_solution {
 	float m[n_max];
@@ -19,7 +26,7 @@ typedef struct t_solution {
 	int t[n_max];
 } t_solution;
 
-void readGraph(string fileName, t_graph& graph);
-void Kruskal(t_graph& graph);
-void Union(vector<int> & parents, int x, int y);
-int find(vector<int> parents, int i);
+void readGraph(string fileName, graph_t & graph);
+void Kruskal(graph_t & graph);
+void Union(subSet_t& subsets, int x, int y);
+int find(subSet_t& subsets, int i);
