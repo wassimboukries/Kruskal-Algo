@@ -1,9 +1,26 @@
+/**
+ * @file functions.cpp
+ * @author Wassim Boukries (wassim.boukries@etu.uca.com)
+ * @brief fichier qui comporte l'implémentation des fonctions déclarés dans functions.h
+ * @date 2022-01-17
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
+
 #include <iostream>
 #include <fstream>
 #include "functions.h"
 #include <vector>
 #include <algorithm>
 
+/**
+ * @brief lire les paramétres du graphique à partir d'un fichier texte et les stocker dans un objet graph
+ * 
+ * @param fileName nom du fichier qui contient les données du graphiques, la première ligne comporte respectivement le nombre des edges 
+ * puis celui des vertex, puis chaque représentera un edge (weight, (vertex source, vertex destination)))
+ * @param graph objet qui modélise le graphe comme un ensemble de edges
+ */
 void readGraph(string fileName, graph_t & graph) {
     int i, weight, sourceV, destV;
 
@@ -19,15 +36,21 @@ void readGraph(string fileName, graph_t & graph) {
     }
 }
 
-
+/**
+ * @brief Algortithme de création de l'arbre minimal couvrant du graph passé en paramètre
+ * 
+ * @param graph objet qui modélise le graphe comme un ensemble de edges
+ */
 void Kruskal(graph_t & graph) {
-    // premier  le deuxi�me
+    // Objet qui contient les deux vecteurs parents et ranks
     subSet_t subsets;
-    int poidCouvrant = 0, sourceRoot, destRoot; 
+    int poidCouvrant = 0,
+        sourceRoot, destRoot; 
+    
     for (int i = 0; i < graph.nVertex; ++i) {
-        // chaque vertex est parent de lui m�me � l'initialisation
+        // chaque vertex est parent de lui même à l'initialisation
         subsets.parents.push_back(i);
-        // le rang est � 0 puisque chaque vertex est parent de lui m�me
+        // le rang est à 0 puisque chaque vertex est parent de lui m�me
         subsets.ranks.push_back(0);
     }
 
@@ -37,6 +60,7 @@ void Kruskal(graph_t & graph) {
     for (auto& edge : graph.edges) {
         sourceRoot = find(subsets, edge.second.first);
         destRoot = find(subsets, edge.second.second);
+
         if (sourceRoot != destRoot) {
             cout << edge.first << " " << edge.second.first << " " << edge.second.second << endl;
             poidCouvrant += edge.first;
@@ -47,7 +71,13 @@ void Kruskal(graph_t & graph) {
     cout << "le poid de l'arbre minimal couvrant est : " << poidCouvrant << endl;
 }
 
-// A utility function to find the subset of an element i
+/**
+ * @brief fonction qui return le parent le plus haut, qui sera utilisé pour vérifier si le vertex i crée un cycle en l'ajoutant au subset ou pas
+ * 
+ * @param subsets Objet qui contient les deux vecteurs parents et ranks
+ * @param i le vertex à trouver dans le subset
+ * @return int parent absolu dans le subset
+ */
 int find(subSet_t & subsets, int i) {
     int parent = subsets.parents[i];
     if (i != parent)
@@ -55,7 +85,13 @@ int find(subSet_t & subsets, int i) {
     return parent;
 }
 
-// A utility function to do union of two subsets
+/**
+ * @brief fonction qui merge les deux vertex x et y en un nouveau subset et l'ajout au subset passé en argument
+ * 
+ * @param subsets Objet qui contient les deux vecteurs parents et ranks
+ * @param x source Vertex
+ * @param y destination Vertex
+ */
 void Union(subSet_t& subsets, int x, int y) {
     int xRoot = find(subsets, x), yRoot = find(subsets, y);
 

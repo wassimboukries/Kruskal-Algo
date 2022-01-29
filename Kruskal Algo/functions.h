@@ -1,6 +1,15 @@
+/**
+ * @file functions.h
+ * @author Wassim Boukries (wassim.boukries@etu.uca.com)
+ * @brief fichier qui comporte les déclarations des différentes fonctions et classes ou structures et les constantes globales.
+ * @version 0.1
+ * @date 2022-01-17
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
+
 #pragma once
-#define n_max 1000
-#define n_succeseur 1000
 
 #include <string>
 #include <vector>
@@ -14,17 +23,11 @@ typedef struct graph {
 } graph_t;
 
 typedef struct subSet {
-	// vecteur qui repr�sente les parents de chaque vertex,
+	// vecteur qui représente les parents de chaque vertex,
 	vector<int> parents;
-	// vecteur qui repr�sente le rang de chaque vertex
+	// vecteur qui représente le rang de chaque vertex
 	vector<int> ranks;
 } subSet_t;
-
-typedef struct t_solution {
-	float m[n_max];
-	int pere[n_max];
-	int t[n_max];
-} t_solution;
 
 void readGraph(string fileName, graph_t & graph);
 void Kruskal(graph_t & graph);
