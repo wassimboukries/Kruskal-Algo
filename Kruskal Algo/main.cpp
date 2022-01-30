@@ -16,14 +16,14 @@
 int main(int argc, char * argv []) {
     graph_t myGraph;
     std::vector<int> edges;
-    std::string inputFileName = "inputFile.txt";
+    std::string inputFileName = "inputFile2.txt";
 
     // en vérifie si un nom de fichier est renseigné ou pas, sinon on utilise celui par défaut
     if (argc > 1) {
         inputFileName = argv[1];
     }
 
-    readGraph("inputFile.txt", myGraph);
+    readGraph(inputFileName, myGraph);
     Kruskal(myGraph);
 
     return 0;

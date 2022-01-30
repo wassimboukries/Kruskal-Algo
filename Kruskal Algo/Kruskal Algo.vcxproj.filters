@@ -31,5 +31,17 @@
     <Text Include="inputFile.txt">
       <Filter>Fichiers de ressources</Filter>
     </Text>
+    <Text Include="inputFile2.txt">
+      <Filter>Fichiers de ressources</Filter>
+    </Text>
+    <Text Include="inputFile3.txt">
+      <Filter>Fichiers de ressources</Filter>
+    </Text>
+    <Text Include="inputFile4.txt">
+      <Filter>Fichiers de ressources</Filter>
+    </Text>
+    <Text Include="inputFile5.txt">
+      <Filter>Fichiers de ressources</Filter>
+    </Text>
   </ItemGroup>
 </Project>

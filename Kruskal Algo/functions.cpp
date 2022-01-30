@@ -57,12 +57,14 @@ void Kruskal(graph_t & graph) {
     // trier les aretes du graphs par ordre croissant des poids (weight)
     sort(graph.edges.begin(), graph.edges.end());
 
+    cout << "W\tS\tD" << endl << endl;
+
     for (auto& edge : graph.edges) {
         sourceRoot = find(subsets, edge.second.first);
         destRoot = find(subsets, edge.second.second);
 
         if (sourceRoot != destRoot) {
-            cout << edge.first << " " << edge.second.first << " " << edge.second.second << endl;
+            cout << edge.first << "\t" << edge.second.first << "\t" << edge.second.second << endl;
             poidCouvrant += edge.first;
             Union(subsets, sourceRoot, destRoot);
         }
@@ -79,10 +81,9 @@ void Kruskal(graph_t & graph) {
  * @return int parent absolu dans le subset
  */
 int find(subSet_t & subsets, int i) {
-    int parent = subsets.parents[i];
-    if (i != parent)
-        subsets.parents[i] = find(subsets, parent);
-    return parent;
+    if (i != subsets.parents[i])
+        subsets.parents[i] = find(subsets, subsets.parents[i]);
+    return subsets.parents[i];
 }
 
 /**
@@ -98,11 +99,11 @@ void Union(subSet_t& subsets, int x, int y) {
     if (subsets.ranks[xRoot] > subsets.ranks[yRoot]) {
         subsets.parents[yRoot] = xRoot;
     }
-    else {
+    else if (subsets.ranks[xRoot] < subsets.ranks[yRoot]) {
         subsets.parents[xRoot] = yRoot;
     }
-
-    if (subsets.ranks[xRoot] == subsets.ranks[yRoot]){
+    else {
+        subsets.parents[yRoot] = xRoot;
         subsets.ranks[yRoot]++;
     }
 }
